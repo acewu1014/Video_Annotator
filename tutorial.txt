@@ -1,0 +1,1 @@
+Since pyQt5 is not compactible with video in mp4 format, It's essential to install the K-Lite codex pack.
