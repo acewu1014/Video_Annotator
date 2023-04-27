@@ -14,7 +14,6 @@ class VideoPlayer(QWidget):
         # p = self.palette()
         # p.setColor(QPalette.Window, Qt.white)
         # self.setPalette(p)
-
         self.init_ui()
                             
 

@@ -9,8 +9,8 @@ class container(QMainWindow):
     def __init__(self):
         super().__init__()
         self.videoplayer = VideoPlayer()
-        self.videolabel = VideoLabel()
-        self.setWindowTitle("Video Player")
+        self.videolabel = VideoLabel(self.videoplayer)
+        self.setWindowTitle("Video Annotator")
         self.setGeometry(350, 100, 900, 800)
         self.setWindowIcon(QIcon('window_icon.png'))
         
@@ -43,6 +43,7 @@ class container(QMainWindow):
         menu_file.addAction(action_open)
         # menu_file.addAction(action_open_json)
         # add an open file corresponding action
+        
         action_open.triggered.connect(self.open_file)
         # action_open_json.triggered.connect(videolabel.open_file)
         
