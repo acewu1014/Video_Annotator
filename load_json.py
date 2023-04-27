@@ -112,17 +112,26 @@ class VideoLabel(QWidget):
     #TODO: delete button and corresponding entry
     def delete_keywords(self, index, keyword_name):
         # self.entries[index]['keywords'] = self.entries[index]['keywords'].remove(keyword_name)
-        self.entries[index]['keywords'].remove(keyword_name)
+        if keyword_name in self.entries[index]['keywords']:
+            self.entries[index]['keywords'].remove(keyword_name)
+        else:
+            self.entries[index]['keywords'].append(keyword_name)
         print(self.entries[index]['keywords'])
 
     def delete_artists(self, index, artists_name):
         # self.entries[index]['keywords'] = self.entries[index]['keywords'].remove(keyword_name)
-        self.entries[index]['artists'].remove(artists_name)
+        if artists_name in self.entries[index]['artists']:
+            self.entries[index]['artists'].remove(artists_name)
+        else:
+            self.entries[index]['artists'].append(artists_name)
         print(self.entries[index]['artists'])
 
     def change_color(self, button):
-        button.setStyleSheet("background-color: red")
-
+        if button.palette().button().color().value() != 255:
+            print(button.palette().button().color().value())
+            button.setStyleSheet("background-color: red")
+        else:
+            button.setStyleSheet("background-color: light gray")
     def save_file(self):
         with open(self.file_path , 'w',encoding="utf-8") as outputfile:
             for entry in self.entries:
