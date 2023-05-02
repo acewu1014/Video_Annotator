@@ -1,8 +1,9 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QSlider, QStyle, QSizePolicy, QFileDialog
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QSlider, QStyle, QSizePolicy, QShortcut
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtMultimediaWidgets import QVideoWidget
-from PyQt5.QtCore import  Qt, QUrl
+from PyQt5.QtCore import  Qt, QUrl, QTimer
+from PyQt5.QtGui import QKeySequence
 
 class VideoPlayer(QWidget):
     def __init__(self):
@@ -15,6 +16,8 @@ class VideoPlayer(QWidget):
         # p.setColor(QPalette.Window, Qt.white)
         # self.setPalette(p)
         self.init_ui()
+        self.init_sc()
+        self.timer = QTimer()
                             
 
     def init_ui(self):
@@ -128,3 +131,9 @@ class VideoPlayer(QWidget):
 
     def set_position(self, position):
         self.mediaPlayer.setPosition(position)
+
+
+    def init_sc(self):
+        self.sc_pause = QShortcut("Q", self)
+        self.sc_pause.activated.connect(self.play_video)
+    # def play_segment(self, length):

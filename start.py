@@ -38,13 +38,16 @@ class container(QMainWindow):
         menu_file = QMenu('FILE', self)
         menubar.addMenu(menu_file)
         action_open = QAction('OPEN VIDEO', self)
+        action_save = QAction('SAVE LABEL', self)
         # action_open_json = QAction('OPEN LABEL')
     
         menu_file.addAction(action_open)
+        menu_file.addAction(action_save)
         # menu_file.addAction(action_open_json)
         # add an open file corresponding action
         
         action_open.triggered.connect(self.open_file)
+        action_save.triggered.connect(self.videolabel.save_file)
         # action_open_json.triggered.connect(videolabel.open_file)
         
         # TODO: try to load the video and json at the same time
