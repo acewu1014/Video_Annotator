@@ -18,6 +18,7 @@ class VideoPlayer(QWidget):
         self.init_ui()
         self.init_sc()
         self.timer = QTimer()
+        # self.timer.timeout.connect(self.play_video)
                             
 
     def init_ui(self):
@@ -104,6 +105,7 @@ class VideoPlayer(QWidget):
             self.playBtn.setEnabled(True)
 
     def play_video(self):
+        self.timer.stop()
         if self.mediaPlayer.state() == QMediaPlayer.PlayingState:
             self.mediaPlayer.pause()
         
@@ -136,4 +138,14 @@ class VideoPlayer(QWidget):
     def init_sc(self):
         self.sc_pause = QShortcut("Q", self)
         self.sc_pause.activated.connect(self.play_video)
-    # def play_segment(self, length):
+    
+    def play_segment(self, tuple):
+        start = tuple[0]
+        length = tuple[1] - tuple[0]
+
+        self.set_position(start)
+
+        if self.mediaPlayer.state() != QMediaPlayer.PlayingState:
+            self.mediaPlayer.play()
+        #connect the single shot timer
+        self.timer.singleShot(length, self.play_video)
