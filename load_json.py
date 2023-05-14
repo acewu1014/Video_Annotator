@@ -13,6 +13,7 @@ class VideoLabel(QWidget):
         self.buttons_shots = []
         self.buttons_keywords = [[]]
         self.buttons_artists = [[]]
+        self.buttons_genres = [[]]
         self.init_ui()
         
         
@@ -87,11 +88,14 @@ class VideoLabel(QWidget):
         entry = self.entries[j]
         keywords = entry["keywords"]
         artists = entry["artists"]
+        genres = entry["genres"]
         grid = QGridLayout()
         label1 = QLabel("keywords")
         label2 = QLabel("atrists")
+        label3 = QLabel("genres")
         grid.addWidget(label1, 0, 0)
-        grid.addWidget(label2, 0, 2)
+        # grid.addWidget(label2, 0, 2)
+        grid.addWidget(label3, 0, 4)
         #Create buttons for each tag
         for i in range(len(keywords)):
             button = QPushButton(keywords[i])
@@ -99,11 +103,18 @@ class VideoLabel(QWidget):
             self.buttons_keywords.append(button)
             button.clicked.connect(partial(self.delete_keywords, j, keywords[i]))
             button.clicked.connect(partial(self.change_color, button))
-        for i in range(len(artists)):
-            button = QPushButton(artists[i])
-            grid.addWidget(button, i+1, 2)
-            self.buttons_artists.append(button)
-            button.clicked.connect(partial(self.delete_artists, j, artists[i]))
+        # display artists
+        # for i in range(len(artists)):
+        #     button = QPushButton(artists[i])
+        #     grid.addWidget(button, i+1, 2)
+        #     self.buttons_artists.append(button)
+        #     button.clicked.connect(partial(self.delete_artists, j, artists[i]))
+        #     button.clicked.connect(partial(self.change_color, button))
+        for i in range(len(genres)):
+            button = QPushButton(genres[i])
+            grid.addWidget(button, i+1, 4)
+            self.buttons_genres.append(button)
+            button.clicked.connect(partial(self.delete_genres, j, genres[i]))
             button.clicked.connect(partial(self.change_color, button))
         info_area.setLayout(grid)
         self.info_scroll.setWidget(info_area)
@@ -126,13 +137,22 @@ class VideoLabel(QWidget):
         else:
             self.entries[index]['artists'].append(artists_name)
         print(self.entries[index]['artists'])
-
+    def delete_genres(self, index, genres_name):
+        # self.entries[index]['keywords'] = self.entries[index]['keywords'].remove(keyword_name)
+        if genres_name in self.entries[index]['genres']:
+            self.entries[index]['genres'].remove(genres_name)
+        else:
+            self.entries[index]['genres'].append(genres_name)
+        print(self.entries[index]['genres'])
+    
     def change_color(self, button):
         if button.palette().button().color().value() != 255:
             print(button.palette().button().color().value())
             button.setStyleSheet("background-color: red")
         else:
             button.setStyleSheet("background-color: light gray")
+    
+    
     def save_file(self):
         with open(self.file_path , 'w',encoding="utf-8") as outputfile:
             for entry in self.entries:

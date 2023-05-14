@@ -18,7 +18,7 @@ class VideoPlayer(QWidget):
         self.init_ui()
         self.init_sc()
         self.timer = QTimer()
-        # self.timer.timeout.connect(self.play_video)
+        self.timer.timeout.connect(self.play_video)
                             
 
     def init_ui(self):
@@ -148,4 +148,5 @@ class VideoPlayer(QWidget):
         if self.mediaPlayer.state() != QMediaPlayer.PlayingState:
             self.mediaPlayer.play()
         #connect the single shot timer
-        self.timer.singleShot(length, self.play_video)
+        # self.timer.singleShot(length, self.play_video)
+        self.timer.start(length)
