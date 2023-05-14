@@ -72,6 +72,7 @@ class VideoLabel(QWidget):
             # button.clicked.connect(partial(self.videoplayer.set_position, entry[0]))
             button.clicked.connect(partial(self.videoplayer.play_segment, entry))
             button.clicked.connect(partial(self.init_shot_info, i))
+            button.clicked.connect(partial(self.change_color_shot, button))
         # self.scroll.show()
         shot_area.setLayout(form)
         self.scroll.setWidget(shot_area)
@@ -136,23 +137,25 @@ class VideoLabel(QWidget):
             self.entries[index]['artists'].remove(artists_name)
         else:
             self.entries[index]['artists'].append(artists_name)
-        print(self.entries[index]['artists'])
     def delete_genres(self, index, genres_name):
         # self.entries[index]['keywords'] = self.entries[index]['keywords'].remove(keyword_name)
         if genres_name in self.entries[index]['genres']:
             self.entries[index]['genres'].remove(genres_name)
         else:
             self.entries[index]['genres'].append(genres_name)
-        print(self.entries[index]['genres'])
     
     def change_color(self, button):
         if button.palette().button().color().value() != 255:
-            print(button.palette().button().color().value())
             button.setStyleSheet("background-color: red")
         else:
             button.setStyleSheet("background-color: light gray")
     
-    
+    def change_color_shot(self, button):
+        if button.palette().button().color().value() != 255:
+            button.setStyleSheet("background-color: green")
+        # else:
+        #     button.setStyleSheet("background-color: light gray")
+
     def save_file(self):
         with open(self.file_path , 'w',encoding="utf-8") as outputfile:
             for entry in self.entries:
