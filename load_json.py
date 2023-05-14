@@ -129,7 +129,6 @@ class VideoLabel(QWidget):
             self.entries[index]['keywords'].remove(keyword_name)
         else:
             self.entries[index]['keywords'].append(keyword_name)
-        print(self.entries[index]['keywords'])
 
     def delete_artists(self, index, artists_name):
         # self.entries[index]['keywords'] = self.entries[index]['keywords'].remove(keyword_name)
