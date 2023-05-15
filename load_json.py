@@ -157,6 +157,9 @@ class VideoLabel(QWidget):
         else:
             button.setStyleSheet("background-color: light gray")
     
+    def change_color_red(self, button):
+        button.setStyleSheet("background-color: red")
+
     def change_color_shot(self, button):
         if button.palette().button().color().value() != 255:
             button.setStyleSheet("background-color: green")
@@ -169,7 +172,7 @@ class VideoLabel(QWidget):
             button = grid.itemAtPosition(i, 0)
             if button:
                 button = button.widget()
-                self.change_color(button)
+                self.change_color_red(button)
 
     def delete_all_genres(self, grid, index):
         self.entries[index]['genres'] = []
@@ -177,7 +180,7 @@ class VideoLabel(QWidget):
             button = grid.itemAtPosition(i, 4)
             if button:
                 button = button.widget()
-                self.change_color(button)
+                self.change_color_red(button)
 
     def save_file(self):
         with open(self.file_path , 'w',encoding="utf-8") as outputfile:
