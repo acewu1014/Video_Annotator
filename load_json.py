@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QSlider, QStyle, QSizePolicy, QFileDialog, QScrollArea, QFormLayout, QGridLayout
+from PyQt5.QtWidgets import QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QLabel, QSlider, QStyle, QSizePolicy, QFileDialog, QScrollArea, QFormLayout, QGridLayout, QShortcut
 from PyQt5.QtCore import Qt
 from functools import partial
 import json 
@@ -9,12 +9,14 @@ class VideoLabel(QWidget):
         self.file_name = ""
         self.file_path = ""
         self.videoplayer = videoplayer
+        self.shot_idx = 0
         self.entries = []
         self.buttons_shots = []
         self.buttons_keywords = [[]]
         self.buttons_artists = [[]]
         self.buttons_genres = [[]]
         self.init_ui()
+        self.init_sc()
         
         
     
@@ -72,6 +74,7 @@ class VideoLabel(QWidget):
             # button.clicked.connect(partial(self.videoplayer.set_position, entry[0]))
             button.clicked.connect(partial(self.videoplayer.play_segment, entry))
             button.clicked.connect(partial(self.init_shot_info, i))
+            button.clicked.connect(partial(self.change_now_shot_index, i))
             button.clicked.connect(partial(self.change_color_shot, button))
         # self.scroll.show()
         shot_area.setLayout(form)
@@ -82,6 +85,13 @@ class VideoLabel(QWidget):
         # hbox.addWidget(self.scroll)
         self.setLayout(self.hbox)
         self.show()
+
+    def init_sc(self):
+        self.sc_pause = QShortcut("C", self)
+        self.sc_pause.activated.connect(self.copy_former_one)
+
+    def change_now_shot_index(self, j):
+        self.shot_idx = j
 
     def init_shot_info(self, j):
         #List the info of No.j entry
@@ -187,3 +197,13 @@ class VideoLabel(QWidget):
             for entry in self.entries:
                 json.dump(entry, outputfile, ensure_ascii=False)
                 outputfile.write('\n')
+
+    #copy keywords and genres from the former shot(i.e. i-1) 
+    def copy_former_one(self):
+        if self.shot_idx>0:
+            self.entries[self.shot_idx]['keywords'] = self.entries[self.shot_idx - 1]['keywords']
+            self.entries[self.shot_idx]['genres'] = self.entries[self.shot_idx - 1]['genres']
+            self.init_shot_info(self.shot_idx)
+            print("Copy succ")
+        else:
+            print("now is shot 0")
