@@ -117,6 +117,14 @@ class VideoLabel(QWidget):
             self.buttons_genres.append(button)
             button.clicked.connect(partial(self.delete_genres, j, genres[i]))
             button.clicked.connect(partial(self.change_color, button))
+
+        # Add select all function
+        selectall_keywords = QPushButton("Select all")
+        selectall_genres = QPushButton("Select all")
+        grid.addWidget(selectall_keywords, 0, 1)
+        grid.addWidget(selectall_genres, 0, 5)
+        selectall_keywords.clicked.connect(partial(self.delete_all_keywords, grid, j))
+        selectall_genres.clicked.connect(partial(self.delete_all_genres, grid, j))
         info_area.setLayout(grid)
         self.info_scroll.setWidget(info_area)
         info_area = QWidget()
@@ -154,6 +162,22 @@ class VideoLabel(QWidget):
             button.setStyleSheet("background-color: green")
         # else:
         #     button.setStyleSheet("background-color: light gray")
+
+    def delete_all_keywords(self, grid, index):
+        self.entries[index]['keywords'] = []
+        for i in range(1, grid.rowCount()):
+            button = grid.itemAtPosition(i, 0)
+            if button:
+                button = button.widget()
+                self.change_color(button)
+
+    def delete_all_genres(self, grid, index):
+        self.entries[index]['genres'] = []
+        for i in range(1, grid.rowCount()):
+            button = grid.itemAtPosition(i, 4)
+            if button:
+                button = button.widget()
+                self.change_color(button)
 
     def save_file(self):
         with open(self.file_path , 'w',encoding="utf-8") as outputfile:
