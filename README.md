@@ -20,6 +20,7 @@ python start.py
 ## Shortcut
 Q: play/pause video.
 C: copy the previous shot info to the current one.
+R: recovery from the origin one.
 
 ## Other information
 After annotating the video, if you open another video, it'll automatically save the label file. On the other hand, you should manually use SAVE_LABEL function. 
