@@ -11,6 +11,8 @@ class VideoLabel(QWidget):
         self.videoplayer = videoplayer
         self.shot_idx = 0
         self.entries = []
+        self.keywords_origin = []
+        self.genres_origin = []
         self.buttons_shots = []
         self.buttons_keywords = [[]]
         self.buttons_artists = [[]]
@@ -58,6 +60,17 @@ class VideoLabel(QWidget):
                 entry = json.loads(entry)
                 self.entries.append(entry)
             self.init_shot_bar()
+        #keep track of the origins, to reconvery from changes
+        self.read_recovery()
+        
+    def read_recovery(self):
+        if len(self.entries):
+            self.keywords_origin = self.entries[len(self.entries)-1]['keywords']
+            self.genres_origin = self.entries[len(self.entries)-1]['genres']
+        print(self.keywords_origin)
+        print(type(self.keywords_origin))
+        print(self.genres_origin)
+        print(type(self.genres_origin))
 
     def clear(self):
         for i in reversed(range(self.hbox.count())): 
@@ -89,6 +102,9 @@ class VideoLabel(QWidget):
     def init_sc(self):
         self.sc_pause = QShortcut("C", self)
         self.sc_pause.activated.connect(self.copy_former_one)
+
+        self.sc_recovery = QShortcut("R", self)
+        self.sc_recovery.activated.connect(self.recovery)
 
     def change_now_shot_index(self, j):
         self.shot_idx = j
@@ -207,3 +223,9 @@ class VideoLabel(QWidget):
             print("Copy succ")
         else:
             print("now is shot 0")
+
+    def recovery(self):
+        self.entries[self.shot_idx]['keywords'] = self.keywords_origin
+        self.entries[self.shot_idx]['genres'] = self.genres_origin
+        self.init_shot_info(self.shot_idx)
+        print("Recovery from the last shot")
