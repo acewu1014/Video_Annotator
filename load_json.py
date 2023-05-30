@@ -65,8 +65,8 @@ class VideoLabel(QWidget):
         
     def read_recovery(self):
         if len(self.entries):
-            self.keywords_origin = self.entries[len(self.entries)-1]['keywords']
-            self.genres_origin = self.entries[len(self.entries)-1]['genres']
+            self.keywords_origin = self.entries[len(self.entries)-1]['keywords'].copy()
+            self.genres_origin = self.entries[len(self.entries)-1]['genres'].copy()
         print(self.keywords_origin)
         print(type(self.keywords_origin))
         print(self.genres_origin)
@@ -122,7 +122,7 @@ class VideoLabel(QWidget):
         label3 = QLabel("genres")
         grid.addWidget(label1, 0, 0)
         # grid.addWidget(label2, 0, 2)
-        grid.addWidget(label3, 0, 4)
+        # grid.addWidget(label3, 0, 4)
         #Create buttons for each tag
         for i in range(len(keywords)):
             button = QPushButton(keywords[i])
@@ -137,20 +137,20 @@ class VideoLabel(QWidget):
         #     self.buttons_artists.append(button)
         #     button.clicked.connect(partial(self.delete_artists, j, artists[i]))
         #     button.clicked.connect(partial(self.change_color, button))
-        for i in range(len(genres)):
-            button = QPushButton(genres[i])
-            grid.addWidget(button, i+1, 4)
-            self.buttons_genres.append(button)
-            button.clicked.connect(partial(self.delete_genres, j, genres[i]))
-            button.clicked.connect(partial(self.change_color, button))
+        # for i in range(len(genres)):
+        #     button = QPushButton(genres[i])
+        #     grid.addWidget(button, i+1, 4)
+        #     self.buttons_genres.append(button)
+        #     button.clicked.connect(partial(self.delete_genres, j, genres[i]))
+        #     button.clicked.connect(partial(self.change_color, button))
 
         # Add select all function
         selectall_keywords = QPushButton("Select all")
-        selectall_genres = QPushButton("Select all")
+        # selectall_genres = QPushButton("Select all")
         grid.addWidget(selectall_keywords, 0, 1)
-        grid.addWidget(selectall_genres, 0, 5)
+        # grid.addWidget(selectall_genres, 0, 5)
         selectall_keywords.clicked.connect(partial(self.delete_all_keywords, grid, j))
-        selectall_genres.clicked.connect(partial(self.delete_all_genres, grid, j))
+        # selectall_genres.clicked.connect(partial(self.delete_all_genres, grid, j))
         info_area.setLayout(grid)
         self.info_scroll.setWidget(info_area)
         info_area = QWidget()
@@ -213,19 +213,21 @@ class VideoLabel(QWidget):
             for entry in self.entries:
                 json.dump(entry, outputfile, ensure_ascii=False)
                 outputfile.write('\n')
+            print("Successfully save file!")
 
     #copy keywords and genres from the former shot(i.e. i-1) 
     def copy_former_one(self):
         if self.shot_idx>0:
-            self.entries[self.shot_idx]['keywords'] = self.entries[self.shot_idx - 1]['keywords']
-            self.entries[self.shot_idx]['genres'] = self.entries[self.shot_idx - 1]['genres']
+            self.entries[self.shot_idx]['keywords'] = self.entries[self.shot_idx - 1]['keywords'].copy()
+            self.entries[self.shot_idx]['genres'] = self.entries[self.shot_idx - 1]['genres'].copy()
             self.init_shot_info(self.shot_idx)
             print("Copy succ")
+            print(self.shot_idx)
         else:
             print("now is shot 0")
 
     def recovery(self):
-        self.entries[self.shot_idx]['keywords'] = self.keywords_origin
-        self.entries[self.shot_idx]['genres'] = self.genres_origin
+        self.entries[self.shot_idx]['keywords'] = self.keywords_origin.copy()
+        self.entries[self.shot_idx]['genres'] = self.genres_origin.copy()
         self.init_shot_info(self.shot_idx)
         print("Recovery from the last shot")
