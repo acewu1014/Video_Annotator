@@ -26,20 +26,21 @@ class VideoLabel(QWidget):
         # self.setGeometry(350, 100, 300, 300)
         self.scroll = QScrollArea(self)
         # self.scroll.setGeometry(350, 100, 700, 500)
-        self.name = QLabel()
-        self.name.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
+        # self.name = QLabel("testing")
+        # self.name.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Maximum)
         # self.button = QPushButton("Shot: {index}".format(index = 20), self.scroll)
         self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         # self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.info_scroll = QScrollArea(self)
         self.scroll.setWidgetResizable(True)
         self.hbox = QHBoxLayout()
-        self.hbox.addWidget(self.name)
+        # self.hbox.addWidget(self.name)
         self.hbox.addWidget(self.scroll)
         self.hbox.addWidget(self.info_scroll)
         self.setLayout(self.hbox)
         self.show()
 
+    "used to debug"
     def change_text(self, text):
         self.name.setText(str(text))
         self.name.show()
@@ -66,7 +67,6 @@ class VideoLabel(QWidget):
     def read_recovery(self):
         if len(self.entries):
             self.keywords_origin = self.entries[len(self.entries)-1]['keywords'].copy()
-            self.genres_origin = self.entries[len(self.entries)-1]['genres'].copy()
         print(self.keywords_origin)
         print(type(self.keywords_origin))
         print(self.genres_origin)
@@ -114,12 +114,8 @@ class VideoLabel(QWidget):
         info_area = QWidget()
         entry = self.entries[j]
         keywords = entry["keywords"]
-        artists = entry["artists"]
-        genres = entry["genres"]
         grid = QGridLayout()
         label1 = QLabel("keywords")
-        label2 = QLabel("atrists")
-        label3 = QLabel("genres")
         grid.addWidget(label1, 0, 0)
         # grid.addWidget(label2, 0, 2)
         # grid.addWidget(label3, 0, 4)
@@ -164,18 +160,18 @@ class VideoLabel(QWidget):
         else:
             self.entries[index]['keywords'].append(keyword_name)
 
-    def delete_artists(self, index, artists_name):
-        # self.entries[index]['keywords'] = self.entries[index]['keywords'].remove(keyword_name)
-        if artists_name in self.entries[index]['artists']:
-            self.entries[index]['artists'].remove(artists_name)
-        else:
-            self.entries[index]['artists'].append(artists_name)
-    def delete_genres(self, index, genres_name):
-        # self.entries[index]['keywords'] = self.entries[index]['keywords'].remove(keyword_name)
-        if genres_name in self.entries[index]['genres']:
-            self.entries[index]['genres'].remove(genres_name)
-        else:
-            self.entries[index]['genres'].append(genres_name)
+    # def delete_artists(self, index, artists_name):
+    #     # self.entries[index]['keywords'] = self.entries[index]['keywords'].remove(keyword_name)
+    #     if artists_name in self.entries[index]['artists']:
+    #         self.entries[index]['artists'].remove(artists_name)
+    #     else:
+    #         self.entries[index]['artists'].append(artists_name)
+    # def delete_genres(self, index, genres_name):
+    #     # self.entries[index]['keywords'] = self.entries[index]['keywords'].remove(keyword_name)
+    #     if genres_name in self.entries[index]['genres']:
+    #         self.entries[index]['genres'].remove(genres_name)
+    #     else:
+    #         self.entries[index]['genres'].append(genres_name)
     
     def change_color(self, button):
         if button.palette().button().color().value() != 255:
@@ -200,13 +196,13 @@ class VideoLabel(QWidget):
                 button = button.widget()
                 self.change_color_red(button)
 
-    def delete_all_genres(self, grid, index):
-        self.entries[index]['genres'] = []
-        for i in range(1, grid.rowCount()):
-            button = grid.itemAtPosition(i, 4)
-            if button:
-                button = button.widget()
-                self.change_color_red(button)
+    # def delete_all_genres(self, grid, index):
+    #     self.entries[index]['genres'] = []
+    #     for i in range(1, grid.rowCount()):
+    #         button = grid.itemAtPosition(i, 4)
+    #         if button:
+    #             button = button.widget()
+    #             self.change_color_red(button)
 
     def save_file(self):
         with open(self.file_path , 'w',encoding="utf-8") as outputfile:
@@ -219,7 +215,7 @@ class VideoLabel(QWidget):
     def copy_former_one(self):
         if self.shot_idx>0:
             self.entries[self.shot_idx]['keywords'] = self.entries[self.shot_idx - 1]['keywords'].copy()
-            self.entries[self.shot_idx]['genres'] = self.entries[self.shot_idx - 1]['genres'].copy()
+            # self.entries[self.shot_idx]['genres'] = self.entries[self.shot_idx - 1]['genres'].copy()
             self.init_shot_info(self.shot_idx)
             print("Copy succ")
             print(self.shot_idx)
@@ -228,6 +224,6 @@ class VideoLabel(QWidget):
 
     def recovery(self):
         self.entries[self.shot_idx]['keywords'] = self.keywords_origin.copy()
-        self.entries[self.shot_idx]['genres'] = self.genres_origin.copy()
+        # self.entries[self.shot_idx]['genres'] = self.genres_origin.copy()
         self.init_shot_info(self.shot_idx)
         print("Recovery from the last shot")
